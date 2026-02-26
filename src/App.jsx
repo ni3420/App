@@ -30,6 +30,7 @@ const App = () => {
         <Route path="my_profile/:name/:id" element={<MyProfilePage />} />
         <Route path='messages' element={<Messages />} />
         <Route path='edit_profile/:name/:id' element={<Editprofilepage />} />
+        <Route path='user_profile/:name/:id' element={<UserProfile />} />
     </Route>
 
     <Route path="*" element={<Not_Found />} />
