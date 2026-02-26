@@ -34,7 +34,6 @@ import  { profileservice } from "./profile";
                     })
                     if(pro)
                     {
-                        console.log(pro)
                         return pro
                     }
                     return login
