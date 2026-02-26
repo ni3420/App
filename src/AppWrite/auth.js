@@ -39,7 +39,6 @@ import  { profileservice } from "./profile";
                     return login
                     
                 }
-               console.log("sign up:",user)
                 return user
             }
         } catch (error) {
@@ -60,7 +59,6 @@ import  { profileservice } from "./profile";
             if(user)
 
             {
-                console.log("login",user)
                 return user
             }
         } catch (error) {

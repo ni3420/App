@@ -12,7 +12,6 @@ const PostCard = ({ post, onDelete }) => {
     const menuRef = useRef(null);
     const isDark = useSelector((state) => state.theme.mode === 'dark');
     const userData = useSelector((state) => state.auth.userData);
-    
     const [likes, setLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
     const [showComments, setShowComments] = useState(false);
@@ -123,7 +122,6 @@ const PostCard = ({ post, onDelete }) => {
         if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
         return new Date(date).toLocaleDateString();
     };
-
     return (
         <div className={`mb-6 rounded-2xl border relative transition-all duration-500 hover:shadow-lg ${
             isDark ? 'bg-slate-900 border-slate-800 text-white' : 'bg-white border-gray-100 shadow-md'
@@ -133,10 +131,10 @@ const PostCard = ({ post, onDelete }) => {
             <div className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate(`/user_profile/${post.username}/${post.userId}`)}>
                     <div className="w-10 h-10 rounded-full bg-blue-500 overflow-hidden">
-                        <img src={post.userAvatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="avatar" className="w-full h-full object-cover" />
+                        <img src={postservice.ImagePost(post.userAvatar) || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} alt="avatar" className="w-full h-full object-cover" />
                     </div>
                     <div>
-                        <h4 className="font-bold text-sm leading-none">{post.username || "User"}</h4>
+                        <h4 className="font-bold text-sm leading-none">{post?.username || "User"}</h4>
                         <span className="text-[10px] text-gray-500">{formatTime(post.$createdAt)}</span>
                     </div>
                 </div>
@@ -208,7 +206,7 @@ const PostCard = ({ post, onDelete }) => {
                     <div className="max-h-64 overflow-y-auto space-y-4 custom-scrollbar">
                         {comments.length > 0 ? comments.map(c => (
                             <div key={c.$id} className="flex gap-3 items-start">
-                                <img src={c.userAvatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} className="w-8 h-8 rounded-full object-cover mt-1 border dark:border-slate-700" alt="" />
+                                <img src={postservice.ImagePost(c.image) || "https://cdn-icons-png.flaticon.com/512/149/149071.png"} className="w-8 h-8 rounded-full object-cover mt-1 border dark:border-slate-700" alt="" />
                                 <div className={`flex-1 p-3 rounded-2xl text-xs ${isDark ? 'bg-slate-800/50' : 'bg-gray-100'}`}>
                                     <div className="flex justify-between items-center mb-1">
                                         <span className="font-bold text-blue-500">@{c.username}</span>

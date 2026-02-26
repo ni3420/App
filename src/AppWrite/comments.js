@@ -11,7 +11,7 @@ class comments{
         .setProject(confi.ProjectId)
         this.database=new Databases(this.client)
     }
-    async createComment(postId,userId,content)
+    async createComment(postId,userId,content,userAvatar,username)
     {
         try {
             const comment=await this.database.createDocument({
@@ -22,6 +22,8 @@ class comments{
                     postId:postId,
                     userId:userId,
                     content:content,
+                    userAvatar:userAvatar,
+                    username:username,
                     timestamp:new Date().toISOString()
 
 
