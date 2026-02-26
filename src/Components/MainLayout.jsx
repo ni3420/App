@@ -1,42 +1,40 @@
 import React, { useEffect } from 'react'
-import Header from './Header'
-import {  Outlet, useNavigate,  } from 'react-router-dom'
+import Header from './Header' // Your NavBar
+import { Outlet } from 'react-router-dom'
 import Footer from './Footer'
 import authservice from '../AppWrite/auth'
-import { useDispatch,  } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Login } from '../store/authSlice'
 
 const MainLayout = () => {
-    const dispatch=useDispatch()
-    const navigate=useNavigate()
-    useEffect(()=>{
-        const getData=async()=>{
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const checkUser = async () => {
             try {
-                const res=await authservice.CurrentUser()
-                if(res)
-                {
+                const res = await authservice.CurrentUser()
+                if (res) {
                     dispatch(Login(res))
-                    navigate("/all_post")
-                    
-                    
-                }else{
-                    navigate("/login")
-                    return
                 }
             } catch (error) {
-              console.log(error)  
+                console.log("MainLayout :: Auth Check Error", error)
             }
         }
-        getData()
+        checkUser()
+    }, [dispatch])
 
-    },[dispatch])
-  return (
-    <div>
-        <Header/>
-        <Outlet/>
-        <Footer/>
-    </div>
-  )
+    return (
+        <div className="flex flex-col min-h-screen">
+            <Header />
+            
+            {/* flex-grow ensures content pushes footer to the bottom */}
+            <main className="flex-grow">
+                <Outlet />
+            </main>
+
+            <Footer />
+        </div>
+    )
 }
 
 export default MainLayout

@@ -10,24 +10,31 @@ import UpdatePost from "./PostPages/UpdatePost"
 import MyProfilePage from './Pages/MyProfilePage'
 import UserProfile from './Pages/UserProfile'
 import Messages from "./Pages/Messages"
-
+import Editprofilepage from './Pages/Editprofilepage'
+import Not_Found from './Pages/Not_Found'
+import { Toaster } from 'react-hot-toast';
 const App = () => {
   return (
-    <Routes>
-      <Route path='/' element={<MainLayout/>}>
-      <Route path="/login" element={<AuthLayout Authentication={false}><LoginPage/></AuthLayout>}/>
-      <Route path="/signup" element={<AuthLayout Authentication={false}><Sign_up/></AuthLayout>}/>
-      <Route path='/all_post' element={<AllPost/>} />
-      <Route path='/create_post' element={<CreatePost/>}/>
-      <Route path='/update_post' element={<UpdatePost/>}/>
-      <Route path="/my_profile/:id" element={<MyProfilePage/>}/>
-      <Route path='/user_profile' element={<UserProfile/>}/>
-      <Route path='/messages' element={<Messages/>}/>
-      
 
-      
-      </Route>
-    </Routes>
+    <>
+    <Toaster position="top-center" reverseOrder={false} />
+    <Routes>
+    <Route path="/login" element={<AuthLayout Authentication={false}><LoginPage /></AuthLayout>} />
+    <Route path="/signup" element={<AuthLayout Authentication={false}><Sign_up /></AuthLayout>} />
+
+    <Route path="/" element={<AuthLayout ><MainLayout /></AuthLayout>}>
+        <Route index element={<AllPost />} /> 
+        <Route path='all_post' element={<AllPost />} />
+        <Route path='create_post' element={<CreatePost />} />
+        <Route path='update_post/:id' element={<UpdatePost />} />
+        <Route path="my_profile/:name/:id" element={<MyProfilePage />} />
+        <Route path='messages' element={<Messages />} />
+        <Route path='edit_profile/:name/:id' element={<Editprofilepage />} />
+    </Route>
+
+    <Route path="*" element={<Not_Found />} />
+</Routes></>
+    
   )
 }
 

@@ -29,7 +29,8 @@ import  { profileservice } from "./profile";
                 {
                     const pro=await profileservice.createProfile({
                         $id:user.$id,
-                        fullname:fullName
+                        fullname:fullName,
+                        userId:user.userId
                     })
                     if(pro)
                     {
@@ -44,6 +45,7 @@ import  { profileservice } from "./profile";
             }
         } catch (error) {
             console.log(error)
+            throw error
             
         }
     }
@@ -64,6 +66,7 @@ import  { profileservice } from "./profile";
             }
         } catch (error) {
             console.log(error)
+            throw error
             
         }
     }
@@ -90,6 +93,7 @@ import  { profileservice } from "./profile";
             }
         } catch (error) {
             console.log(error)
+            throw error
             
         }
     }

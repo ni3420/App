@@ -8,7 +8,7 @@ class Like{
         this.client=new Client()
         .setEndpoint(confi.AppWrite)
         .setProject(confi.ProjectId)
-        this.database=new Databases(Client)
+        this.database=new Databases(this.client)
     }
     
 
@@ -27,7 +27,7 @@ class Like{
                 return await this.database.createDocument(confi.DatabseId, confi.Likes, ID.unique(), {
                     postId: postId,
                     userId: userId,
-                    createdAt: new Date().toISOString()
+                    
                 });
             }
         } catch (error) {
@@ -40,9 +40,9 @@ class Like{
         try {
             const res = await this.database.listDocuments(confi.DatabseId,confi.Likes, [
                 Query.equal("postId", postId),
-                Query.limit(0)
+                Query.limit(100)
             ]);
-            return res.total;
+            return res;
         } catch (error) {
             console.error("LikeService :: getLikeCount :: error", error);
             return 0;
@@ -64,6 +64,9 @@ class Like{
     }
 
 }
+
+export const likeservice =new Like()
+export default likeservice
 
 
 

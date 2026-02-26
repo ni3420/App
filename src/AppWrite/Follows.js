@@ -8,7 +8,7 @@ class follows{
     {
         this.client=new Client()
         .setEndpoint(confi.AppWrite)
-        .setEndpoint(confi.ProjectId)
+        .setProject(confi.ProjectId)
         this.database=new Databases(this.client)
     }
 
@@ -38,25 +38,36 @@ class follows{
         }
     }
 
-    async getFollowers(userId) {
+    async getFollowers($id) {
         return await this.database.listDocuments(confi.DatabseId, confi.Follows, [
-            Query.equal("followingId", userId)
+            Query.equal("following", $id)
         ]);
     }
 
     async getFollowing(userId) {
         return await this.database.listDocuments(confi.DatabseId, confi.Follows, [
-            Query.equal("followerId", userId)
+            Query.equal("followers", userId)
         ]);
     }
 
     async isFollowing(followerId, followingId) {
-        const res = await this.database.listDocuments(confi.DatabseId, confi.Follows, [
-            Query.equal("followerId", followerId),
-            Query.equal("followingId", followingId)
-        ]);
+    if (!followerId || !followingId) return false;
+
+    try {
+        const res = await this.database.listDocuments(
+            confi.DatabseId, 
+            confi.Follows, 
+            [
+                Query.equal("followers", followerId),
+                Query.equal("following", followingId)
+            ]
+        );
         return res.total > 0;
+    } catch (error) {
+        console.error("FollowService :: isFollowing :: error", error);
+        return false;
     }
+}
 
      
 }

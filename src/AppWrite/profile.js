@@ -39,14 +39,34 @@ class profile{
         }
     }
 
-    async getProfile(userId) {
+    async getProfile(Id) {
         try {
-            return await this.database.getDocument(confi.DatabseId, confi.Profiles, userId);
+            return await this.database.getDocument(confi.DatabseId, confi.Profiles, Id);
         } catch (error) {
             console.error("ProfileService :: getProfile :: error", error);
             return null;
         }
     }
+
+    async getPostsByUserId(userId) {
+    try {
+        // We use listDocuments with a filter query
+        const posts = await this.database.listDocuments(
+            confi.DatabseId,
+            confi.CollectionId,
+            [
+                Query.equal("userId", userId), // Filter by the specific user
+                Query.orderDesc("$createdAt"), // Show most recent posts first
+                Query.limit(100)               // Adjust limit as needed
+            ]
+        );
+
+        return posts; // Returns { documents: [], total: number }
+    } catch (error) {
+        console.error("AppWrite Service :: getPostsByUserId :: error", error);
+        return { documents: [], total: 0 };
+    }
+}
 
     async ListProfile()
     {
@@ -65,14 +85,29 @@ class profile{
         }
     }
 
-    async updateProfile(userId, data) {
-        try {
-            return await this.database.updateDocument(confi.DatabseId, confi.Profiles, userId, data);
-        } catch (error) {
-            console.error("ProfileService :: updateProfile :: error", error);
-            throw error;
-        }
+    async updateProfile(userId, { username, fullName, bio, about, location, avatarId }) {
+    try {
+        // Build the payload with only existing attributes
+        const payload = {
+            username,
+            fullName,
+            bio,
+            about,
+            location,
+            avatarId
+        };
+
+        return await this.database.updateDocument(
+            confi.DatabseId, 
+            confi.Profiles, 
+            userId, 
+            payload
+        );
+    } catch (error) {
+        console.error("ProfileService :: updateProfile :: error", error);
+        throw error;
     }
+}
 
     async uploadAvatar(file) {
         try {

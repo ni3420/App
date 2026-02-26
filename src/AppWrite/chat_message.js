@@ -58,15 +58,28 @@ import { confi } from "../confi/confi";
     
     subscribeToMessages(callback) {
     return this.client.subscribe(
-      `databases.${confi.DatabseId}.collections.${confi.Messages}.documents`,
-      (response) => {
-        // Only trigger the callback if a new document is created
-        if (response.events.includes("databases.*.collections.*.documents.*.create")) {
-          callback(response.payload);
+        `databases.${confi.DatabseId}.collections.${confi.Messages}.documents`,
+        (response) => {
+            // Log response to see the exact structure if it fails again
+            // console.log("Realtime response:", response);
+
+            // 1. Check if response.events exists and is an array
+            if (response.events && Array.isArray(response.events)) {
+                
+                // 2. Use a more robust check for the 'create' event
+                const isCreateEvent = response.events.some(event => 
+                    event.includes("documents.*.create") || 
+                    event.endsWith(".create")
+                );
+
+                if (isCreateEvent) {
+                    callback(response.payload);
+                }
+            }
         }
-      }
     );
-  }
+}
+  
 }
 
 
