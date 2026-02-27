@@ -67,14 +67,15 @@ import { confi } from "../confi/confi";
             if (response.events && Array.isArray(response.events)) {
                 
                 // 2. Use a more robust check for the 'create' event
-                const isCreateEvent = response.events.some(event => 
-                    event.includes("documents.*.create") || 
-                    event.endsWith(".create")
-                );
+                // const isCreateEvent = response.events.some(event => 
+                //     event.includes("documents.*.create") || 
+                //     event.endsWith(".create")
+                // );
 
-                if (isCreateEvent) {
-                    callback(response.payload);
-                }
+        
+                    console.log("New message created:", response);
+                    callback(response);
+                
             }
         }
     );
